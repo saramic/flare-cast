@@ -24,6 +24,59 @@
     - https://youtu.be/RvbWl8rZOoQ
     - https://youtu.be/aM2ktMKAunw
 
+## Tue 25 Feb
+
+### RX470 433MHz radio modules
+
+- first attempt to get working
+    - https://randomnerdtutorials.com/rf-433mhz-transmitter-receiver-module-with-arduino/
+    - https://qiachip.com/products/qiachip-433mhz-superheterodyne-rf-receiver-and-transmitter-module
+- BUT didn't seem to work
+- [ ] check if there is any 433Mhz signal
+- [ ] solder on antennas
+
+```
+                  ------------------                WL102-341 433MHz Transmitter
+                 | |--|  |--|  |--| |                              -----------
+          EN     | |  |--|  |--|  | | GPIO23                      | (=======) |
+          GPIO36 |  --------------  | GIPO22                      |      ████ |
+          GPIO39 | |              | | GIPO1                       |      ████ |
+          GPIO34 | | ESP-WROOM-32 | | GPI03                        -----------
+          GPIO35 | |              | | GPI021                           | | | |
+          GPIO32 | |              | | GPI019                       EN -  | | |
+          GPIO33 | |              | | GPI018                      DAT ---  | |
+          GPIO25 | |              | | GPI05                       VCC -----  |
+          GPIO26 |  --------------  | GPI017                      GND -------
+          GPIO27 |                  | GPI016
+          GPIO14 |                  | GPI04
+  DAT --- GPIO12 |                  | GPI02
+          GPIO13 |                  | GPI015
+  GND --- GND    | RST  _____  BOOT | GND
+  VCC --- VIN    | [ ] / USB \  [ ] | VDD 3V3
+                  ------------------
+```
+
+```
+                  ------------------                RX470C 433MHz Reciver
+                 | |--|  |--|  |--| |               --------------------------
+          EN     | |  |--|  |--|  | | GPIO23       |  █████████████ (=======) |
+          GPIO36 |  --------------  | GIPO22       |  █████████████           |
+          GPIO39 | |              | | GIPO1         --------------------------
+          GPIO34 | | ESP-WROOM-32 | | GPI03                            | | | |
+          GPIO35 | |              | | GPI021                      VCC -  | | |
+          GPIO32 | |              | | GPI019                       DO ---  | |
+          GPIO33 | |              | | GPI018                       DO -----  |
+          GPIO25 | |              | | GPI05                       GND -------
+          GPIO26 |  --------------  | GPI017
+          GPIO27 |                  | GPI016
+          GPIO14 |                  | GPI04
+          GPIO12 |                  | GPI02
+  DO ---- GPIO13 |                  | GPI015
+  GND --- GND    | RST  _____  BOOT | GND
+  VCC --- VIN    | [ ] / USB \  [ ] | VDD 3V3
+                  ------------------
+```
+
 ## Mon 24 Feb
 
 ### Arduino C string carriage and line break \r\n

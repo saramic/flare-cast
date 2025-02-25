@@ -6,6 +6,11 @@
 #include <BLEUtils.h>
 #include <BLEServer.h>
 
+#include <RH_ASK.h> // defaults: speed = 2000, rxPin = 11, txPin = 12, pttPin = 10
+#include <SPI.h> // Not actually used but needed to compile
+
+RH_ASK driver(2000, 12, 13); // 200bps, TX on D12, RX on D13 (pin 3)
+
 // randomly generated using `uuidgen`
 #define SERVICE_UUID "EC25C9C7-5A7D-4E83-A465-ECFC724BBD49"
 #define CHARACTERISTIC_UUID "D824F131-3893-4593-85AA-CE1DBB8E0337"
@@ -19,9 +24,9 @@ std::string rxOldValue;
 void setup()
 {
   Serial.begin(115200);
+  Serial.println("flare-cast server is UP");
   pinMode(LED_BUILTIN, OUTPUT);
 
-  Serial.begin(115200);
   Serial.println("Starting BLE work!");
 
   BLEDevice::init("MyESP32");
@@ -43,6 +48,12 @@ void setup()
   Serial.println("Characteristic defined! Now you can read it in your phone!");
 
   // TODO: probably check phone is connected prior to going into loop
+
+  // RF 433Mhz module
+  if (!driver.init())
+  {
+    Serial.println("init failed");
+  }
 }
 
 void loop()
@@ -74,6 +85,10 @@ void loop()
       Serial.print(">led:");
       Serial.println(0);
       pCharacteristic->notify();
+
+      const char *msg = "0:is sent";
+      driver.send((uint8_t *)msg, strlen(msg));
+      driver.waitPacketSent();
     }
     else
     {
@@ -81,6 +96,10 @@ void loop()
       Serial.print(">led:");
       Serial.println(1);
       pCharacteristic->notify();
+
+      const char *msg = "1:is sent";
+      driver.send((uint8_t *)msg, strlen(msg));
+      driver.waitPacketSent();
     }
     rxOldValue = rxValue;
   }
