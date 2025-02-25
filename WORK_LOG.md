@@ -191,18 +191,18 @@ str.erase(std::remove(str.begin(), str.end(), '\n'), str.cend());
     - [ ] Create a BLE app for your mobile phone! Control an ESP32 with BLE -
           MoThunderz
 
-          [![Create a BLE app for your mobile phone! Control an ESP32 with BLE -
-             MoThunderz
-            ](http://img.youtube.com/vi/RvbWl8rZOoQ/0.jpg)
-            ](https://youtu.be/RvbWl8rZOoQ)
+      [![Create a BLE app for your mobile phone! Control an ESP32 with BLE -
+         MoThunderz
+        ](http://img.youtube.com/vi/RvbWl8rZOoQ/0.jpg)
+        ](https://youtu.be/RvbWl8rZOoQ)
 
     - [ ] Create your own App! Control an ESP32 (Arduino) via Bluetooth - Part 1
           MoThunderz
 
-          [![Create your own App! Control an ESP32 (Arduino) via Bluetooth -
-             Part 1 - MoThunderz
-            ](http://img.youtube.com/vi/aM2ktMKAunw/0.jpg)
-            ](https://youtu.be/aM2ktMKAunw)
+      [![Create your own App! Control an ESP32 (Arduino) via Bluetooth -
+         Part 1 - MoThunderz
+        ](http://img.youtube.com/vi/aM2ktMKAunw/0.jpg)
+        ](https://youtu.be/aM2ktMKAunw)
 
 ### ESP32 Bluetooth Unique ID
 
