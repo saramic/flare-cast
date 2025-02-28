@@ -36,39 +36,40 @@ void loop()
     int i;
     // Message with a good checksum received, dump it.
     Serial.print("Message: ");
-    Serial.println((char*)buf);
+    Serial.println((char *)buf);
   }
 
-  // long now = millis();
-  // if (now - last > 1000) // every 1 second
-  // {
-  //   Serial.print(">led:");
-  //   Serial.println(light ? "1" : "0");
-  //   last = now;
-  // }
-  // uint8_t buf[12];
-  // uint8_t buflen = sizeof(buf);
-  // if (driver.recv(buf, &buflen)) // Non-blocking
-  // {
-  //   int i;
-  //   // Message with a good checksum received, dump it.
-  //   Serial.print("Message: ");
-  //   Serial.println((char *)buf);
-  //   if (buf != oldBuffer)
-  //   {
-  //     if (oldBuffer[0] == '0') // only checking first character being a '0' character
-  //     {
-  //       digitalWrite(LED_BUILTIN, LOW);
-  //       light = false;
-  //     }
-  //     else
-  //     {
-  //       digitalWrite(LED_BUILTIN, HIGH);
-  //       light = true;
-  //     }
-  //     // oldBuffer[0] = *buf; // TODO: would this do?
-  //     memcpy(oldBuffer, &buf, sizeof(buf));
-  //   }
-  // }
-  // delay(20);
+  long now = millis();
+  if (now - last > 1000) // every 1 second
+  {
+    //   Serial.print(">led:");
+    //   Serial.println(light ? "1" : "0");
+    // }
+    // uint8_t buf[12];
+    // uint8_t buflen = sizeof(buf);
+    // if (driver.recv(buf, &buflen)) // Non-blocking
+    // {
+    //   int i;
+    //   // Message with a good checksum received, dump it.
+    //   Serial.print("Message: ");
+    //   Serial.println((char *)buf);
+    //   if (buf != oldBuffer)
+    //   {
+    //     if (oldBuffer[0] == '0') // only checking first character being a '0' character
+    if (light)
+    {
+      digitalWrite(LED_BUILTIN, LOW);
+      light = false;
+    }
+    else
+    {
+      digitalWrite(LED_BUILTIN, HIGH);
+      light = true;
+    }
+    //     // oldBuffer[0] = *buf; // TODO: would this do?
+    //     memcpy(oldBuffer, &buf, sizeof(buf));
+    //   }
+    last = now;
+  }
+  delay(20);
 }
