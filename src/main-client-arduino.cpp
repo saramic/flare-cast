@@ -11,7 +11,7 @@ boolean light = false;
 void setup()
 {
   Serial.begin(115200);
-  Serial.println("flare-cast Arduino server is UP");
+  Serial.println("flare-cast Arduino client is UP");
   pinMode(LED_BUILTIN, OUTPUT);
 }
 
