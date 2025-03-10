@@ -2,8 +2,10 @@
 
 ## Next Up
 
-- [ ] get up and running with 433Mhz
-- [ ] compare distance of 433Mhz vs BLE vs LoRA?
+- [x] get up and running with 433MHz
+- [ ] compare distance of 433MHz vs BLE vs LoRA?
+  - [ ] fine tune the 433MHz antenna
+  - [ ] look at alternative comms with `nRF24` 2 way modules or `LoRA`
 - [ ] circuit to turn on/off arc lighter
 - [ ] state diagram for safety with undirectional comms.
     1. waiting for driver - slow flash
@@ -24,6 +26,89 @@
     - https://youtu.be/RvbWl8rZOoQ
     - https://youtu.be/aM2ktMKAunw
 
+## Mon 10 Mar
+
+- couldn't connect an Arduino Nano via USBC
+  - tried `brew install --cask wch-ch34x-usb-serial-driver` but not supported
+    on MacOS silicon
+  - tried various ways of getting `CH34xVCPDriver` via `make setup` but failed
+  - finally plugged in via `USBC` -> `USBC` cable -> `USBC port` and it worked
+    🎉 seems that things are not all equal when using `USBC` -> `USB3`
+- turned on Spectrum analyser and saw some activity on 433MHz
+  - assumed it was the receiver
+  - soldered on the antennas - short fo
+  - as per this
+    - https://electronics.stackexchange.com/questions/639746/why-do-my-433-mhz-receiver-and-transmitter-modules-not-work-reliably
+    - the reciever module is the wide one and takes the "long" antenna even
+      though the double hole looks like it could be a better fit
+
+      ![
+       QiaChip 433MHz antenna for Rx and Tx
+       ](media/qiachip_433MHz_superhet_tx_rx_antenna.jpg)
+
+    - the transmitter module is the more square one and takes the "short"
+      antenna with the wiggle
+  - [ ] exploring antennas is a whole other thing that can be done
+    - https://www.instructables.com/433-MHz-Coil-loaded-antenna/ seems like a
+      good start
+    - there is some talk of dipoles online as well
+    - this might be another worthwhile tutorial
+      - [![
+         #368 How to build performing antennas for LoRa, WiFi, 433MHz,
+         Airplanes etc.(NanoVNA, MMANA-GAL) -  Andreas Spiess
+         ](http://img.youtube.com/vi/6cVYsHCLKq8/0.jpg)
+         ](https://youtu.be/6cVYsHCLKq8)
+    - and there is probably a whole amount of info on using the **Nano VNA** to
+      tune an antenna
+      - [![
+         #314: How to use the NanoVNA to sweep / measure an antenna system's
+         SWR and optimize its tuning - w2aew
+         ](http://img.youtube.com/vi/xa6dqx9udcg/0.jpg)
+         ](https://youtu.be/xa6dqx9udcg)
+  - [ ] looking at [**Great Scott**](https://www.youtube.com/@greatscottlab) he
+    seems to prefere the `nRF24` as it allows 2 way comms
+    - [ ] as per his comparison of `LoRA`, `nRF24` and `generic 433MHz
+      - [![
+         LoRa Module VS nRF24 VS Generic RF Module || Range & Power Test -
+         GreatScott!
+         ](http://img.youtube.com/vi/nP6YuwNVoPU/0.jpg)
+         ](https://youtu.be/nP6YuwNVoPU)
+    - [ ] might be worth seeing if he comes up with anything usefull in the
+      walkie talkie
+      - [![
+         Creating a Walkie-Talkie with generic 433MHz RF Modules?! -
+         GreatScott!
+         ](http://img.youtube.com/vi/PKowvbnIxso/0.jpg)
+         ](https://youtu.be/PKowvbnIxso)
+  - fianally the bug was in the code 🤦‍♂️, and chagning the speed down to
+    200 (_although have not checked with faster speed again_)
+    ```diff
+      #include <RH_ASK.h> // defaults: speed = 2000, rxPin = 11, txPin = 12, pttPin = 10
+
+    - RH_ASK driver(2000, 12, 13); // 200bps, TX on D12, RX on D13 (pin 3)
+    + RH_ASK driver(200, 13, 12); // 200bps, RX on D13 (default is 11), TX on D12
+    ```
+    - ie the 2nd parameter is the `rxPin` and the 3rd is the `txPin` as pwer
+      the `#include` line above
+- brought back some code idea that I am not sure where I got it from, to use
+  the `BOOT` button on pin `0` to trigger an action
+  ```c
+  #define ONBOARD_BUTTON 0 // ESP32 onboard BOOT button
+  int oldButtonState = LOW;
+
+  // setup
+  pinMode(ONBOARD_BUTTON, INPUT_PULLUP);
+
+  // loop
+  buttonState = digitalRead(ONBOARD_BUTTON);
+
+  if (buttonState != oldButtonState && buttonState == HIGH)
+  {
+    // button was pressed code
+  }
+  oldButtonState = buttonState;
+  ```
+
 ## Tue 25 Feb
 
 ### RX470 433MHz radio modules
@@ -32,7 +117,7 @@
     - https://randomnerdtutorials.com/rf-433mhz-transmitter-receiver-module-with-arduino/
     - https://qiachip.com/products/qiachip-433mhz-superheterodyne-rf-receiver-and-transmitter-module
 - BUT didn't seem to work
-- [ ] check if there is any 433Mhz signal
+- [ ] check if there is any 433MHz signal
 - [ ] solder on antennas
 
 ```
