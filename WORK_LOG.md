@@ -6,6 +6,16 @@
 - [ ] compare distance of 433MHz vs BLE vs LoRA?
   - [ ] fine tune the 433MHz antenna
   - [ ] look at alternative comms with `nRF24` 2 way modules or `LoRA`
+- [ ] look at using ASK directly
+  - [ ] https://github.com/jecrespo/RadioHead
+        see `examples/ask/ask_transmitter/ask_transmitter.pde`
+        ```c
+        driver.send((uint8_t *)msg, strlen(msg));
+        driver.waitPacketSent();
+        ```
+        should be more efficient, also put speed up to 2,000bps
+  - as found here
+    https://forum.arduino.cc/t/ask-rf-receiving-hex-instead-of-text/698814
 - [ ] circuit to turn on/off arc lighter
 - [ ] state diagram for safety with undirectional comms.
     1. waiting for driver - slow flash
